@@ -1597,7 +1597,6 @@ public class Main extends JPanel {
         for (int i = indexShouldStartFromForChaleshForYouRound; i < match.getPlayersArePlaying().size(); i++) {
             if(match.getIndexChaleshPlayer() != -1){
                 indexShouldStartFromForChaleshForYouRound = match.getPlayersArePlaying().size();
-                System.out.println("hello");
                 break;
             }
             else if(match.getPlayersArePlaying().get(i).getCardsForPlayer().size() == 0){

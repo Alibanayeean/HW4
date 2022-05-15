@@ -28,9 +28,9 @@ public class Player {
         actionForAttacked = Action.NoAction;
         actionForChalesh = Action.NoAction;
         cardsRemove = new LinkedList<Cards>();
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(this);
-        Save("player.json", json);
+//        Gson gson = new GsonBuilder().create();
+//        String json = gson.toJson(this);
+//        Save("player.json", json);
     }
 
 

@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Scanner;
 
 
 public class Match {
@@ -24,7 +25,6 @@ public class Match {
     private int indexChaleshPlayer;
     private int Winner;
 
-    Gson gson = new GsonBuilder().create();
 
     public Match() {
 
@@ -38,6 +38,13 @@ public class Match {
         indexFrontPlayer = -1;
         indexChaleshPlayer = -1;
         Winner = -1;
+
+        Gson gson = new GsonBuilder().create();
+        for (int i = 0; i < playersArePlaying.size(); i++) {
+            String json = gson.toJson(playersArePlaying.get(i));
+            Save("player.json" , json);
+        }
+
 
         GozareshGeri();
         logger.info("----------------------------------------- : start : -----------------------------------------");
@@ -60,21 +67,21 @@ public class Match {
             p = rand.nextInt(copy_cards.size());
             for_copy.add(copy_cards.get(p));
             if(i % 2 == 1){
-                LinkedList<Cards> forAddPlayer = new LinkedList<Cards>();
+                LinkedList<Cards> CardForAddPlayer = new LinkedList<Cards>();
                 for (int j = 0; j < for_copy.size(); j++) {
-                    forAddPlayer.add(for_copy.get(j));
+                    CardForAddPlayer.add(for_copy.get(j));
                 }
                 if(i / 2 == roundYou){
-                    playersArePlaying.add(new Player(forAddPlayer, i / 2));
+                    playersArePlaying.add(new Player(CardForAddPlayer, i / 2));
                 }
                 else if(i / 2 == (roundYou + 1) % 4 ){
-                    playersArePlaying.add(new Paranoid(forAddPlayer, i / 2));
+                    playersArePlaying.add(new Paranoid(CardForAddPlayer, i / 2));
                 }
                 else if(i / 2 == (roundYou + 2) % 4 ){
-                    playersArePlaying.add(new Paranoid(forAddPlayer, i / 2));
+                    playersArePlaying.add(new Paranoid(CardForAddPlayer, i / 2));
                 }
                 else if(i / 2 == (roundYou + 3) % 4 ){
-                    playersArePlaying.add(new Paranoid(forAddPlayer, i / 2));
+                    playersArePlaying.add(new Paranoid(CardForAddPlayer, i / 2));
                 }
                 for_copy.clear();
 
@@ -1241,7 +1248,7 @@ public class Match {
         return result;
     }
 
-    public void Save(String filename, String text){
+    private void Save(String filename, String text){
         File file = new File(filename);
         try {
             PrintWriter printWriter = new PrintWriter(file);
@@ -1251,6 +1258,27 @@ public class Match {
             e.printStackTrace();
         }
 
+    }
+
+    private Player Load(String filename){
+        File file = new File(filename);
+        try {
+            Player player = null;
+            Scanner scanner = new Scanner(file);
+            String userJson = "";
+            while (scanner.hasNext()){
+                userJson += scanner.nextLine();
+            }
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.setPrettyPrinting();
+            Gson gson = gsonBuilder.create();
+            player = gson.fromJson( userJson , Player.class);
+            return  player;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void GozareshGeri(){

@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
 
 
 public class Match {
@@ -40,10 +41,8 @@ public class Match {
         Winner = -1;
 
         Gson gson = new GsonBuilder().create();
-        for (int i = 0; i < playersArePlaying.size(); i++) {
-            String json = gson.toJson(playersArePlaying.get(i));
-            Save("player.json" , json);
-        }
+        String json = gson.toJson(playersArePlaying);
+        Save("player.json" , json);
 
 
         GozareshGeri();

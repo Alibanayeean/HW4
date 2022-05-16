@@ -879,12 +879,22 @@ public class Main extends JPanel {
         }
         g.drawImage(image2, -10 , -10, null);
 
+
+        match.WhoIsWinner();
+        if(match.getWinner() != -1){
+            g.drawString("Winner is : " + match.getWinner() , 800, 500 );
+            return;
+        }
+
         g.setFont(new Font("SERIF", Font.BOLD, 30));
         g.setColor(Color.BLACK);
         g.drawString("Coin: " + match.getBank().getCoins(), 300 , 130);
         g.drawString("Num cards: " + match.getBank().getCards().size(), 300 , 180);
 
-
+        Graphics2D g3 = (Graphics2D) g;
+        g3.setColor(Color.BLACK);
+        g3.setStroke(new BasicStroke(3));
+        g3.drawLine(0, 760 , 2000 , 760);
 
         for (int i = 0; i < 4; i++) {
             counter = 0;
@@ -1026,19 +1036,12 @@ public class Main extends JPanel {
             }
         }
 
-        match.WhoIsWinner();
-        if(match.getWinner() != -1){
-            g.drawString("Winner is : " + match.getWinner() , 800, 500 );
-            return;
-        }
+
 
         Color color;
 
 
-        Graphics2D g3 = (Graphics2D) g;
-        g3.setColor(Color.BLACK);
-        g3.setStroke(new BasicStroke(3));
-        g3.drawLine(0, 760 , 2000 , 760);
+
 
         if(match.getRoundYou() == 0){
             color = new Color(232, 84, 20);

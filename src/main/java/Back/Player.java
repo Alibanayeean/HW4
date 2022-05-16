@@ -28,11 +28,7 @@ public class Player {
         actionForAttacked = Action.NoAction;
         actionForChalesh = Action.NoAction;
         cardsRemove = new LinkedList<Cards>();
-//        Gson gson = new GsonBuilder().create();
-//        String json = gson.toJson(this);
-//        Save("player.json", json);
     }
-
 
     public LinkedList<Cards> getCardsForPlayer() {
         return cardsForPlayer;
@@ -82,17 +78,6 @@ public class Player {
         this.numRound = numRound;
     }
 
-    public void Save(String filename, String text){
-        File file = new File(filename);
-        try {
-            PrintWriter printWriter = new PrintWriter(file);
-            printWriter.write(text);
-            printWriter.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public LinkedList<Cards> getCardsRemove() {
         return cardsRemove;
     }
@@ -107,6 +92,18 @@ public class Player {
 
     public void setIndexCardShouldChangeForChalesh(int indexCardShouldChangeForChalesh) {
         this.indexCardShouldChangeForChalesh = indexCardShouldChangeForChalesh;
+    }
+
+
+    public void Save(String filename, String text){
+        File file = new File(filename);
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.write(text);
+            printWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 

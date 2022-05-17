@@ -7,11 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.FileHandler;
+import java.util.*;
 
 
 public class Match {
@@ -336,8 +332,15 @@ public class Match {
                     playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
                     bank.setCoins(bank.getCoins() + 3);
 
-                    p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
-                    playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                    if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
+
+                    }
+                    else{
+                        playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
+                        bank.setCoins(bank.getCoins() + 3);
+                        p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
+                        playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                    }
                 }
                 else if(playersArePlaying.get(indexChaleshPlayer).getActionForChalesh() == Action.ChaleshForFirst){
 
@@ -362,19 +365,28 @@ public class Match {
                             }
                         }
 
+                        if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
 
+                        }
+                        else{
+                            playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
+                            bank.setCoins(bank.getCoins() + 3);
+                            p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
+                            playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                        }
+
+                    }
+                }
+                else{
+                    if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
+
+                    }
+                    else{
                         playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
                         bank.setCoins(bank.getCoins() + 3);
                         p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
                         playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
                     }
-                }
-                else{
-                    playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
-                    bank.setCoins(bank.getCoins() + 3);
-
-                    p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
-                    playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
                 }
             }
             else if(playersArePlaying.get(indexFrontPlayer).getActionForAttacked() == Action.ShahDokht){
@@ -398,9 +410,15 @@ public class Match {
                         playersArePlaying.get(numRound).getCardsRemove().add(playersArePlaying.get(numRound).getCardsForPlayer().get(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh()));
                         playersArePlaying.get(numRound).getCardsForPlayer().remove(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh());
 
-                        playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
-                        bank.setCoins(bank.getCoins() + 3);
-                        logger.info(numRound + " -> Bank : Get 3 money");
+                        if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
+
+                        }
+                        else{
+                            playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
+                            bank.setCoins(bank.getCoins() + 3);
+                            p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
+                            playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                        }
 
 
                     }
@@ -444,11 +462,15 @@ public class Match {
                         logger.info(numRound + " -> Bank : Get 3 money");
                         logger.info(numRound + " -> " + indexFrontPlayer + " : Kill");
 
+                        if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
 
-                        playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
-                        bank.setCoins(bank.getCoins() + 3);
-                        p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
-                        playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                        }
+                        else{
+                            playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
+                            bank.setCoins(bank.getCoins() + 3);
+                            p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
+                            playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                        }
                     }
                     else{
                         logger.info(indexChaleshPlayer + " -> loose chalesh" +  " : Card should remove " + playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().get(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh()));
@@ -489,11 +511,15 @@ public class Match {
             }
             else{
                 if(indexChaleshPlayer == -1){
-                    playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
-                    bank.setCoins(bank.getCoins() + 3);
+                    if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
 
-                    p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
-                    playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                    }
+                    else{
+                        playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
+                        bank.setCoins(bank.getCoins() + 3);
+                        p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
+                        playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                    }
 
                     logger.info(numRound + " -> Bank : Get 3 money");
                     logger.info(numRound + " -> " + indexFrontPlayer + " : Kill");
@@ -533,21 +559,30 @@ public class Match {
                         }
 
 
-                        playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
-                        bank.setCoins(bank.getCoins() + 3);
-                        p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
-                        playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                        if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
+
+                        }
+                        else{
+                            playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
+                            bank.setCoins(bank.getCoins() + 3);
+                            p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
+                            playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                        }
 
                         logger.info(numRound + " -> Bank : Get 3 money");
                         logger.info(numRound + " -> " + indexFrontPlayer + " : Kill");
                     }
                 }
                 else{
-                    playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
-                    bank.setCoins(bank.getCoins() + 3);
+                    if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size() == 0){
 
-                    p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
-                    playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                    }
+                    else{
+                        playersArePlaying.get(numRound).setNumCoin(playersArePlaying.get(numRound).getNumCoin() - 3);
+                        bank.setCoins(bank.getCoins() + 3);
+                        p = random.nextInt(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size());
+                        playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().remove(p);
+                    }
 
                     logger.info(numRound + " -> Bank : Get 3 money");
                     logger.info(numRound + " -> " + indexFrontPlayer + " : Kill");
@@ -612,7 +647,7 @@ public class Match {
                     }
                 }
             }
-            else if(playersArePlaying.get(indexFrontPlayer).getActionForAttacked() == Action.Farmandeh | playersArePlaying.get(indexFrontPlayer).getActionForAttacked() == Action.Safir0 | playersArePlaying.get(indexFrontPlayer).getActionForAttacked() == Action.Safir1 | playersArePlaying.get(indexFrontPlayer).getActionForAttacked() == Action.SafirBoth){
+            else if(playersArePlaying.get(indexFrontPlayer).getActionForAttacked() == Action.Farmandeh | playersArePlaying.get(indexFrontPlayer).getActionForAttacked() == Action.Safir ){
                 if(indexChaleshPlayer == -1){
 
                 }
@@ -748,174 +783,27 @@ public class Match {
 
         }
 
-        else if(playersArePlaying.get(numRound).getActionForRound() == Action.Safir0){
-            logger.info(numRound + " -> Safir : Change first card");
+        else if(playersArePlaying.get(numRound).getActionForRound() == Action.Safir){
 
-
-            if(indexChaleshPlayer == -1){
-                ShuffleCardsFromBank();
-                p = random.nextInt(bank.getCards().size());
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeFirst();
-
-                logger.info(numRound + " -> First card changed");
-
-            }
-            else if(playersArePlaying.get(indexChaleshPlayer).getActionForChalesh() == Action.ChaleshForFirst){
-                logger.info(indexChaleshPlayer + " -> " + numRound + " : Chalesh");
-
-                if(!IsNumRoundWinChalesh()){
-                    logger.info(numRound + " -> Loose chalesh : Remove card " +  playersArePlaying.get(numRound).getCardsForPlayer().get(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh()));
-
-                    playersArePlaying.get(numRound).getCardsRemove().add(playersArePlaying.get(numRound).getCardsForPlayer().get(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh()));
-                    playersArePlaying.get(numRound).getCardsForPlayer().remove(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh());
-                }
-                else{
-                    logger.info(indexChaleshPlayer + " -> Loose chalesh : Remove card " +  playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().get(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh()));
-
-                    playersArePlaying.get(indexChaleshPlayer).getCardsRemove().add(playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().get(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh()));
-                    playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().remove(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh());
-
-                    for (int i = 0; i < playersArePlaying.get(numRound).getCardsForPlayer().size() ; i++) {
-                        if(playersArePlaying.get(numRound).getCardsForPlayer().get(i) == Cards.Safir){
-                            bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().get(i));
-                            playersArePlaying.get(numRound).getCardsForPlayer().remove(i);
-                            logger.info(numRound + " -> Should change card safir");
-
-                            break;
-                        }
-                    }
-
-
-                    ShuffleCardsFromBank();
-                    p = random.nextInt(bank.getCards().size());
-                    playersArePlaying.get(numRound).getCardsForPlayer().add(bank.getCards().get(p));
-                    bank.getCards().remove(p);
-
-                    ShuffleCardsFromBank();
-                    p = random.nextInt(bank.getCards().size());
-                    playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                    bank.getCards().remove(p);
-                    bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                    playersArePlaying.get(numRound).getCardsForPlayer().removeFirst();
-
-                    logger.info(numRound + " -> First card changed");
-
-                }
-            }
-            else{
-                ShuffleCardsFromBank();
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeFirst();
-
-                logger.info(numRound + " -> First card changed");
-
-            }
-
-        }
-        else if(playersArePlaying.get(numRound).getActionForRound() == Action.Safir1){
-            logger.info(numRound + " -> Safir : Change second card");
+            logger.info(numRound + " -> Safir : Change card");
 
             if(indexChaleshPlayer == -1){
-
-                ShuffleCardsFromBank();
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeLast();
-
-                logger.info(numRound + " -> Second card changed");
-
-            }
-            else if(playersArePlaying.get(indexChaleshPlayer).getActionForChalesh() == Action.ChaleshForFirst){
-                logger.info(indexChaleshPlayer + " -> " + numRound + " : Chalesh");
-
-                if(!IsNumRoundWinChalesh()){
-                    logger.info(numRound + " -> Loose chalesh : Remove card " +  playersArePlaying.get(numRound).getCardsForPlayer().get(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh()));
-
-                    playersArePlaying.get(numRound).getCardsRemove().add(playersArePlaying.get(numRound).getCardsForPlayer().get(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh()));
-                    playersArePlaying.get(numRound).getCardsForPlayer().remove(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh());
-                }
-                else{
-                    logger.info(indexChaleshPlayer + " -> Loose chalesh : Remove card " +  playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().get(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh()));
-
-                    playersArePlaying.get(indexChaleshPlayer).getCardsRemove().add(playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().get(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh()));
-                    playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().remove(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh());
-
-                    for (int i = 0; i < playersArePlaying.get(numRound).getCardsForPlayer().size() ; i++) {
-                        if(playersArePlaying.get(numRound).getCardsForPlayer().get(i) == Cards.Safir){
-                            bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().get(i));
-                            playersArePlaying.get(numRound).getCardsForPlayer().remove(i);
-                            logger.info(numRound + " -> Should change card safir");
-
-                            break;
-                        }
-                    }
-
-                    ShuffleCardsFromBank();
-                    p = random.nextInt(bank.getCards().size());
-                    playersArePlaying.get(numRound).getCardsForPlayer().add(bank.getCards().get(p));
-                    bank.getCards().remove(p);
-
-                    ShuffleCardsFromBank();
-                    p = random.nextInt(bank.getCards().size());
-                    playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                    bank.getCards().remove(p);
-                    bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                    playersArePlaying.get(numRound).getCardsForPlayer().removeLast();
-
-                    logger.info(numRound + " -> Second card changed");
-
-
-
-
-
-
+                Collections.sort(playersArePlaying.get(numRound).CardsChangeForSafir);
+                Collections.reverse(playersArePlaying.get(numRound).CardsChangeForSafir);
+                for (int i = 0; i < playersArePlaying.get(numRound).CardsChangeForSafir.size(); i++) {
+                    int a = playersArePlaying.get(numRound).CardsChangeForSafir.get(i);
+//                        System.out.println(playersArePlaying.get(numRound).getCardsForPlayer().get(a));
+                    bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().get(a));
+                    System.out.println(playersArePlaying.get(numRound).getCardsForPlayer().remove(a));
                 }
 
-            }
-            else{
-                ShuffleCardsFromBank();
-                p = random.nextInt(bank.getCards().size());
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeLast();
-
-                logger.info(numRound + " -> Second card changed");
-
-            }
-
-        }
-        else if(playersArePlaying.get(numRound).getActionForRound() == Action.SafirBoth){
-            logger.info(numRound + " -> Safir : Change both card");
-
-            if(indexChaleshPlayer == -1){
-                ShuffleCardsFromBank();
-                p = random.nextInt(bank.getCards().size());
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeLast();
-
-                ShuffleCardsFromBank();
-                p = random.nextInt(bank.getCards().size());
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeFirst();
-
+                playersArePlaying.get(numRound).CardsChangeForSafir.clear();
                 logger.info(numRound + " -> Cards changed");
 
             }
             else if(playersArePlaying.get(indexChaleshPlayer).getActionForChalesh() == Action.ChaleshForFirst){
                 if(!IsNumRoundWinChalesh()){
                     logger.info(numRound + " -> Loose chalesh : Remove card " +  playersArePlaying.get(numRound).getCardsForPlayer().get(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh()));
-
                     playersArePlaying.get(numRound).getCardsRemove().add(playersArePlaying.get(numRound).getCardsForPlayer().get(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh()));
                     playersArePlaying.get(numRound).getCardsForPlayer().remove(playersArePlaying.get(numRound).getIndexCardShouldChangeForChalesh());
                 }
@@ -925,10 +813,16 @@ public class Match {
                     playersArePlaying.get(indexChaleshPlayer).getCardsRemove().add(playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().get(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh()));
                     playersArePlaying.get(indexChaleshPlayer).getCardsForPlayer().remove(playersArePlaying.get(indexChaleshPlayer).getIndexCardShouldChangeForChalesh());
 
-                    ShuffleCardsFromBank();
-                    p = random.nextInt(bank.getCards().size());
-                    playersArePlaying.get(numRound).getCardsForPlayer().add(bank.getCards().get(p));
-                    bank.getCards().remove(p);
+                    Collections.sort(playersArePlaying.get(numRound).CardsChangeForSafir);
+                    Collections.reverse(playersArePlaying.get(numRound).CardsChangeForSafir);
+                    for (int i = 0; i < playersArePlaying.get(numRound).CardsChangeForSafir.size(); i++) {
+                        int a = playersArePlaying.get(numRound).CardsChangeForSafir.get(i);
+//                        System.out.println(playersArePlaying.get(numRound).getCardsForPlayer().get(a));
+                        bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().get(a));
+                        System.out.println(playersArePlaying.get(numRound).getCardsForPlayer().remove(a));
+                    }
+
+
 
                     for (int i = 0; i < playersArePlaying.get(numRound).getCardsForPlayer().size() ; i++) {
                         if(playersArePlaying.get(numRound).getCardsForPlayer().get(i) == Cards.Safir){
@@ -936,61 +830,50 @@ public class Match {
                             playersArePlaying.get(numRound).getCardsForPlayer().remove(i);
                             logger.info(numRound + " -> Should change card safir");
 
+
+                            ShuffleCardsFromBank();
+                            p = random.nextInt(bank.getCards().size());
+                            playersArePlaying.get(numRound).getCardsForPlayer().add(bank.getCards().get(p));
+                            bank.getCards().remove(p);
+
+
                             break;
                         }
                     }
-
-                    ShuffleCardsFromBank();
-                    p = random.nextInt(bank.getCards().size());
-                    playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                    bank.getCards().remove(p);
-                    bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                    playersArePlaying.get(numRound).getCardsForPlayer().removeLast();
-
-                    ShuffleCardsFromBank();
-                    p = random.nextInt(bank.getCards().size());
-                    playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                    bank.getCards().remove(p);
-                    bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                    playersArePlaying.get(numRound).getCardsForPlayer().removeFirst();
-
-                    logger.info(numRound + " -> Cards changed");
-
-
 
 
                 }
 
             }
             else{
-                ShuffleCardsFromBank();
-                p = random.nextInt(bank.getCards().size());
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeLast();
 
-                ShuffleCardsFromBank();
-                p = random.nextInt(bank.getCards().size());
-                playersArePlaying.get(numRound).getCardsForPlayer().add(1, bank.getCards().get(p));
-                bank.getCards().remove(p);
-                bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().getFirst());
-                playersArePlaying.get(numRound).getCardsForPlayer().removeFirst();
+                Collections.sort(playersArePlaying.get(numRound).CardsChangeForSafir);
+                Collections.reverse(playersArePlaying.get(numRound).CardsChangeForSafir);
+                for (int i = 0; i < playersArePlaying.get(numRound).CardsChangeForSafir.size(); i++) {
+                    int a = playersArePlaying.get(numRound).CardsChangeForSafir.get(i);
+                    bank.getCards().add(playersArePlaying.get(numRound).getCardsForPlayer().get(a));
+                    System.out.println(playersArePlaying.get(numRound).getCardsForPlayer().remove(a));
+                }
 
+                playersArePlaying.get(numRound).CardsChangeForSafir.clear();
                 logger.info(numRound + " -> Cards changed");
 
+
             }
+
+
+            playersArePlaying.get(numRound).CardsChangeForSafir.clear();
+
         }
 
         else{
             return;
         }
 
-        if(indexFrontPlayer != -1){
-            playersArePlaying.get(indexFrontPlayer).setActionForAttacked(Action.NoAction);
-        }
-        if(indexChaleshPlayer != -1){
-            playersArePlaying.get(indexChaleshPlayer).setActionForChalesh(Action.NoAction);
+        for (int i = 0; i < playersArePlaying.size(); i++) {
+            playersArePlaying.get(i).setActionForChalesh(Action.NoAction);
+            playersArePlaying.get(i).setActionForRound(Action.NoAction);
+            playersArePlaying.get(i).setActionForRound(Action.NoAction);
         }
 
         playersArePlaying.get(numRound).setActionForRound(Action.NoAction);
@@ -1121,7 +1004,7 @@ public class Match {
 
     public void getIndexChaleshInAllPlayers() {
         for (int i = 0; i < playersArePlaying.size(); i++) {
-            if (playersArePlaying.get(i).getActionForChalesh() == Action.ChaleshForFirst | playersArePlaying.get(i).getActionForChalesh() == Action.ChaleshForSecond) {
+            if ((playersArePlaying.get(i).getActionForChalesh() == Action.ChaleshForFirst | playersArePlaying.get(i).getActionForChalesh() == Action.ChaleshForSecond) & playersArePlaying.get(i).getCardsForPlayer().size() != 0) {
                 indexChaleshPlayer = i;
                 return;
             }
@@ -1141,12 +1024,16 @@ public class Match {
         }
 
         int i;
-        for (i = 0; i < playersArePlaying.get(numRound).getCardsForPlayer().size(); i++) {
+        int size = playersArePlaying.get(numRound).getCardsForPlayer().size();
+        if(size >= 2){
+            size = 2;
+        }
+        for (i = 0; i < size; i++) {
             if(playersArePlaying.get(numRound).getCardsForPlayer().get(i) == card){
                 break;
             }
         }
-        if(i == playersArePlaying.get(numRound).getCardsForPlayer().size()){
+        if(i == size){
             return false;
         }
         else{
@@ -1169,12 +1056,16 @@ public class Match {
         }
 
         int i;
-        for (i = 0; i < playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size(); i++) {
+        int size = playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size();
+        if(size >= 2){
+            size = 2;
+        }
+        for (i = 0; i < size; i++) {
             if(playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().get(i) == card){
                 break;
             }
         }
-        if(i == playersArePlaying.get(indexFrontPlayer).getCardsForPlayer().size()){
+        if(i == size){
             return false;
         }
         else{
@@ -1187,7 +1078,7 @@ public class Match {
         if(player.getActionForRound() == Action.Farmandeh){
             return Cards.Farmandeh;
         }
-        else if(player.getActionForRound() == Action.Safir0 | player.getActionForRound() == Action.Safir1 | player.getActionForRound() == Action.SafirBoth){
+        else if(player.getActionForRound() == Action.Safir){
             return Cards.Safir;
         }
         else if(player.getActionForRound() == Action.BozorgZade){
@@ -1203,16 +1094,16 @@ public class Match {
     }
 
     public Cards ChangeActionToCardForFrontPlayer(Player player){
-        if(player.getActionForRound() == Action.ShahDokht){
+        if(player.getActionForAttacked() == Action.ShahDokht){
             return Cards.ShahDokht;
         }
-        else if(player.getActionForRound() == Action.Farmandeh){
+        else if(player.getActionForAttacked() == Action.Farmandeh){
             return Cards.Farmandeh;
         }
-        else if(player.getActionForRound() == Action.Safir0 | player.getActionForRound() == Action.Safir1 | player.getActionForRound() == Action.SafirBoth){
+        else if(player.getActionForAttacked() == Action.Safir){
             return Cards.Safir;
         }
-        else if(player.getActionForRound() == Action.BozorgZade){
+        else if(player.getActionForAttacked() == Action.BozorgZade){
             return Cards.BozorgZade;
         }
         else{

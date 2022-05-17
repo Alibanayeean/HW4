@@ -6,12 +6,11 @@ import Back.Robot;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class Main extends JPanel {
     Match match = new Match();
@@ -21,19 +20,34 @@ public class Main extends JPanel {
     int indexShouldStartFromForChaleshForYouRound = 0;
     int counterForChalesh = 0;
     int indexFrontPlayerForRoundYou = 0;
-    int[] YsForCards = new int[2];
+    int numClickedForSafirRoundYou = 0;
+    int numClickedForSafir1 = 0;
+    int numClickedForSafir2 = 0;
+    int[] YsForCards = new int[4];
+    boolean isTabPressed = false;
+
+    int XFirstForTabPressed = 0;
 
     Main(){
         YsForCards[0] = 780;
         YsForCards[1] = 780;
+        YsForCards[2] = 780;
+        YsForCards[3] = 780;
         addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
 
             }
 
             public void mousePressed(MouseEvent e) {
+                if(isTabPressed){
+                    return;
+                }
+
                 int x = e.getX();
                 int y = e.getY();
+                if(match.getWinner() != -1){
+                    return;
+                }
 
                 if(match.getNumRound() == match.getRoundYou()){
                     if(numClickedForHisRound == 0){
@@ -160,7 +174,24 @@ public class Main extends JPanel {
                             }
                         }
                         else if(x >= 1150 & x <= 1350 & y >= 650 & y <= 750){
-                            match.getPlayersArePlaying().get(match.getNumRound()).setActionForRound(Action.Safir0);
+                            Random random = new Random();
+                            match.getPlayersArePlaying().get(match.getNumRound()).setActionForRound(Action.Safir);
+                            if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                                match.ShuffleCardsFromBank();
+                                int p = random.nextInt(match.getBank().getCards().size());
+                                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                                match.getBank().getCards().remove(p);
+
+                                p = random.nextInt(match.getBank().getCards().size());
+                                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                                match.getBank().getCards().remove(p);
+                            }
+                            else if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 1){
+                                match.ShuffleCardsFromBank();
+                                int p = random.nextInt(match.getBank().getCards().size());
+                                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                                match.getBank().getCards().remove(p);
+                            }
                         }
                         else if(x >= 1375 & x <= 1575 & y >= 650 & y <= 750){
                             if(match.getPlayersArePlaying().get(match.getRoundYou()).getNumCoin() >= 1){
@@ -208,44 +239,87 @@ public class Main extends JPanel {
 
 
                         }
-                        else if(match.getPlayersArePlaying().get(match.getRoundYou()).getActionForRound() == Action.Safir0){
-                            if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
-                                match.getPlayersArePlaying().get(match.getNumRound()).setActionForRound(Action.Safir0);
-                            }
-                            else if(x >= 700 & x <= 900 & y >= 650 & y <= 750){
-                                match.getPlayersArePlaying().get(match.getNumRound()).setActionForRound(Action.SafirBoth);
-                            }
-                            else if(x >= 925 & x <= 1125 & y >= 650 & y <= 750){
-                                match.getPlayersArePlaying().get(match.getNumRound()).setActionForRound(Action.Safir1);
-                            }
-                            else{
-                                return;
-                            }
-
-
-                            for (int i = 0; i < match.getPlayersArePlaying().size(); i++) {
-                                if(i != match.getNumRound() & match.getIndexChaleshPlayer() == -1){
-                                    if(match.getPlayersArePlaying().get(i).getCardsForPlayer().size() != 0){
-                                        ((Robot) match.getPlayersArePlaying().get(i)).ChangeActionForChalesh(match);
+                        else if(match.getPlayersArePlaying().get(match.getRoundYou()).getActionForRound() == Action.Safir){
+                            if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 4){
+                                if(x >= 680 & x <= 800 & y >= 780 & y <= 980){
+                                    if(numClickedForSafirRoundYou == 0){
+                                        numClickedForSafir1 = 680;
+                                        match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(0);
+                                        numClickedForSafirRoundYou++;
+                                    }
+                                    else{
+                                        if(numClickedForSafir1 != 680){
+                                            match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(0);
+                                            numClickedForSafirRoundYou++;
+                                        }
                                     }
                                 }
-                            }
-
-                            if(match.getIndexChaleshPlayer() == -1){
-                                numClickedForHisRound = 0;
-                                match.DoAction();
-                            }
-                            else{
-                                if(match.IsNumRoundWinChalesh()){
-                                    numClickedForHisRound = 0;
-                                    ((Robot) match.getPlayersArePlaying().get(match.getIndexChaleshPlayer())).ChangeCardBecauseLooseChalesh(match);
-                                    match.DoAction();
+                                else if(x >= 830 & x <= 950 & y >= 780 & y <= 980){
+                                    if(numClickedForSafirRoundYou == 0){
+                                        numClickedForSafir1 = 830;
+                                        match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(1);
+                                        numClickedForSafirRoundYou++;
+                                    }
+                                    else{
+                                        if(numClickedForSafir1 != 830){
+                                            match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(1);
+                                            numClickedForSafirRoundYou++;
+                                        }
+                                    }
+                                }
+                                else if(x >= 980 & x <= 1100 & y >= 780 & y <= 980){
+                                    if(numClickedForSafirRoundYou == 0){
+                                        numClickedForSafir1 = 980;
+                                        match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(2);
+                                        numClickedForSafirRoundYou++;
+                                    }
+                                    else{
+                                        if(numClickedForSafir1 != 980){
+                                            match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(2);
+                                            numClickedForSafirRoundYou++;
+                                        }
+                                    }
+                                }
+                                else if(x >= 1130 & x <= 1250 & y >= 780 & y <= 980){
+                                    if(numClickedForSafirRoundYou == 0){
+                                        numClickedForSafir1 = 1230;
+                                        match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(3);
+                                        numClickedForSafirRoundYou++;
+                                    }
+                                    else{
+                                        if(numClickedForSafir1 != 1230){
+                                            match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(3);
+                                            numClickedForSafirRoundYou++;
+                                        }
+                                    }
                                 }
                                 else{
-                                    numClickedForHisRound = 4;
+                                    return;
+                                }
+
+                                if(numClickedForSafirRoundYou == 2){
+                                    numClickedForSafirRoundYou = 0;
+                                    numClickedForHisRound++;
                                 }
                             }
+                            else if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                                if(x >= 680 & x <= 800 & y >= 780 & y <= 980){
+                                    match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(0);
+                                    numClickedForSafirRoundYou++;
+                                }
+                                else if(x >= 830 & x <= 950 & y >= 780 & y <= 980){
+                                    match.getPlayersArePlaying().get(match.getNumRound()).CardsChangeForSafir.add(1);
+                                    numClickedForSafirRoundYou++;
+                                }
+                                else{
+                                    return;
+                                }
 
+                                if(numClickedForSafirRoundYou == 1){
+                                    numClickedForSafirRoundYou = 0;
+                                    numClickedForHisRound++;
+                                }
+                            }
 
                         }
                         else{
@@ -282,13 +356,16 @@ public class Main extends JPanel {
                     else if(numClickedForHisRound == 3){
                         if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
                             indexShouldStartFromForChaleshForYouRound++;
+                            numClickedForHisRound = 2;
                         }
                         else if(x >= 925 & x <= 1125 & y >= 650 & y <= 750){
                             match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.ChaleshForSecond);
                             indexShouldStartFromForChaleshForYouRound++;
+                            numClickedForHisRound = 2;
                         }
                     }
                     else if(numClickedForHisRound == 4) {
+
                         if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
                             if(x >= 680 & x <= 800 & y >= YsForCards[0] & y <= YsForCards[0] + 200){
                                 match.getPlayersArePlaying().get(match.getNumRound()).setIndexCardShouldChangeForChalesh(0);
@@ -364,7 +441,7 @@ public class Main extends JPanel {
                                     indexFrontPlayerForRoundYou++;
                                 }
                                 else if(x >= 700 & x <= 900 & y >= 650 & y <= 750){
-                                    match.getPlayersArePlaying().get(match.getRoundYou()).setActionForAttacked(Action.Safir0);
+                                    match.getPlayersArePlaying().get(match.getRoundYou()).setActionForAttacked(Action.Safir);
                                     indexFrontPlayerForRoundYou++;
                                 }
                                 else if(x >= 925 & x <= 1125 & y >= 650 & y <= 750){
@@ -376,28 +453,7 @@ public class Main extends JPanel {
                         else if (indexShouldStartFromForChalesh == match.getRoundYou()) {
                             if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.DaryafteKomakeKhraeji) {
 
-                                if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
-                                    match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.NoAction);
-                                    indexShouldStartFromForChalesh++;
-                                }
-                                else if(x >= 925 & x <= 1125 & y >= 650 & y <= 750){
-                                    match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.ChaleshForFirst);
-                                    indexShouldStartFromForChalesh++;
-                                }
                             }
-                            else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth) {
-                                if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
-                                    match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.NoAction);
-                                    indexShouldStartFromForChalesh++;
-
-                                }
-                                else if(x >= 950 & x <= 1150 & y >= 650 & y <= 750){
-                                    match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.ChaleshForFirst);
-                                    indexShouldStartFromForChalesh++;
-                                }
-
-                            }
-
                             else{
                                 if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
                                     match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.NoAction);
@@ -427,7 +483,7 @@ public class Main extends JPanel {
                                     indexShouldStartFromForChalesh++;
                                 }
                             }
-                            else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth) {
+                            else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir) {
                                 if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
                                     match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.NoAction);
                                     indexShouldStartFromForChalesh++;
@@ -450,8 +506,8 @@ public class Main extends JPanel {
                                     indexShouldStartFromForChalesh++;
                                 }
                                 if(match.getIndexFrontPlayer() != -1){
-                                    if((match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir0 | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir1 |
-                                            match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.SafirBoth)){
+                                    if((match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir |
+                                            match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir)){
                                         if(x >= 925 & x <= 1125 & y >= 650 & y <= 750){
                                             match.getPlayersArePlaying().get(match.getRoundYou()).setActionForChalesh(Action.ChaleshForSecond);
                                             indexShouldStartFromForChalesh++;
@@ -485,6 +541,17 @@ public class Main extends JPanel {
             public void mouseMoved(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
+
+                if(isTabPressed){
+                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));;
+
+                    return;
+                }
+
+                if(match.getWinner() != -1){
+                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));;
+                    return;
+                }
 
                 if(match.getNumRound() == match.getRoundYou()){
                     if(numClickedForHisRound == 0){
@@ -574,18 +641,44 @@ public class Main extends JPanel {
 
                             }
                         }
-                        else if(match.getPlayersArePlaying().get(match.getRoundYou()).getActionForRound() == Action.Safir0){
-                            if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
-                                setCursor(new Cursor(Cursor.HAND_CURSOR));
+                        else if(match.getPlayersArePlaying().get(match.getRoundYou()).getActionForRound() == Action.Safir){
+                            if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 4){
+                                if(x >= 680 & x <= 800 & y >= 780 & y <= 980){
+                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                                }
+                                else if(x >= 830 & x <= 950 & y >= 780 & y <= 980){
+                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                                }
+                                else if(x >= 980 & x <= 1100 & y >= 780 & y <= 980){
+                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                                }
+                                else if(x >= 1130 & x <= 1250 & y >= 780 & y <= 980){
+                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                                }
+                                else{
+                                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+                                }
+
                             }
-                            else if(x >= 700 & x <= 900 & y >= 650 & y <= 750){
-                                setCursor(new Cursor(Cursor.HAND_CURSOR));
-                            }
-                            else if(x >= 925 & x <= 1125 & y >= 650 & y <= 750){
-                                setCursor(new Cursor(Cursor.HAND_CURSOR));
-                            }
-                            else{
-                                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                            else if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                                if(x >= 680 & x <= 800 & y >= 780 & y <= 980){
+                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                                }
+                                else if(x >= 830 & x <= 950 & y >= 780 & y <= 980){
+                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                                }
+                                else{
+                                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+                                }
+
                             }
 
                         }
@@ -727,30 +820,6 @@ public class Main extends JPanel {
 
                             if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.DaryafteKomakeKhraeji) {
 
-                                if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
-                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-                                }
-                                else if(x >= 925 & x <= 1125 & y >= 650 & y <= 750){
-                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-                                }
-                                else{
-                                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                                }
-                            }
-                            else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth) {
-
-                                if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
-                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
-                                }
-                                else if(x >= 950 & x <= 1150 & y >= 650 & y <= 750){
-                                    setCursor(new Cursor(Cursor.HAND_CURSOR));
-                                }
-                                else{
-                                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                                }
-
                             }
 
                             else{
@@ -792,7 +861,7 @@ public class Main extends JPanel {
                                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                                 }
                             }
-                            else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth) {
+                            else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir) {
 
                                 if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
                                     setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -808,8 +877,8 @@ public class Main extends JPanel {
 
                             else{
                                 if(match.getIndexFrontPlayer() != -1){
-                                    if((match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir0 | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir1 |
-                                            match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.SafirBoth)){
+                                    if((match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir))
+                                    {
                                         if(x >= 475 & x <= 675 & y >= 650 & y <= 750){
                                             setCursor(new Cursor(Cursor.HAND_CURSOR));
                                         }
@@ -844,6 +913,31 @@ public class Main extends JPanel {
 
             }
         });
+
+        addKeyListener(new KeyListener() {
+            public void keyTyped(KeyEvent e) {
+            }
+
+            public void keyPressed(KeyEvent e) {
+
+                if(e.getKeyCode() == KeyEvent.VK_TAB){
+                    isTabPressed = true;
+                }
+
+            }
+
+            public void keyReleased(KeyEvent e) {
+                e.consume();
+
+                if(e.getKeyCode() == KeyEvent.VK_TAB){
+                    XFirstForTabPressed = 0;
+                    isTabPressed = false;
+                }
+
+            }
+        });
+
+
 
     }
 
@@ -882,9 +976,16 @@ public class Main extends JPanel {
 
         match.WhoIsWinner();
         if(match.getWinner() != -1){
-            g.drawString("Winner is : " + match.getWinner() , 800, 500 );
+            g.setFont(new Font("SERIF", Font.BOLD, 30));
+            g.setColor(Color.BLACK);
+            g.drawString("Winner is: " + match.getWinner(), 780 , 500);
             return;
         }
+
+        Graphics2D g4 = (Graphics2D) g;
+        g4.setColor(Color.BLACK);
+        g4.setStroke(new BasicStroke(3));
+        g4.drawRect(565, 246, 512, 395);
 
         g.setFont(new Font("SERIF", Font.BOLD, 30));
         g.setColor(Color.BLACK);
@@ -1061,9 +1162,6 @@ public class Main extends JPanel {
         g.drawString("turn: " + (match.getNumRound() + 1), 1450, 50);
 
 
-
-
-
         if(match.getRoundYou() == match.getNumRound()){
             int count = 0;
 
@@ -1179,7 +1277,7 @@ public class Main extends JPanel {
                     g2.drawOval(225 * 4 + 35 , 660, 180, 80);
                     count++;
                 }
-                else if(match.getPlayersArePlaying().get(match.getRoundYou()).getActionForRound() == Action.Safir0){
+                else if(match.getPlayersArePlaying().get(match.getRoundYou()).getActionForRound() == Action.Safir){
                     g.setColor(color);
                     g.fillOval(225 * 2 + 25  , 650, 200 , 100);
                     g.setColor(Color.BLACK);
@@ -1222,8 +1320,8 @@ public class Main extends JPanel {
                     Graphics2D g2 = (Graphics2D) g;
 
                     if(match.getIndexFrontPlayer() != -1){
-                        if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir0 | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir1 |
-                                match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.SafirBoth){
+                        if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir)
+                        {
                             g.setColor(color);
                             g.fillOval(225 * 2 + 25, 650, 200, 100);
                             g.setColor(Color.BLACK);
@@ -1268,7 +1366,8 @@ public class Main extends JPanel {
             }
 
             if(match.getIndexFrontPlayer() != -1){
-                if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.DaryafteKomakeKhraeji & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.BozorgZade & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.Safir0 & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.Safir1 & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.SafirBoth){
+                if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.DaryafteKomakeKhraeji & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.BozorgZade & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.Safir)
+                {
                     g.setColor(Color.BLACK);
                     g.setFont(new Font("SERIF", Font.ITALIC, 25));
                     g.drawString("Front: " + match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked().name(), 10, 850);
@@ -1362,7 +1461,8 @@ public class Main extends JPanel {
                         g2.setColor(Color.WHITE);
                         g2.drawOval(225 * 4 + 35 , 660, 180, 80);
                     }
-                    else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth) {
+                    else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir)
+                    {
                         g.setColor(color);
                         g.fillOval(225 * 2 + 25, 650, 200, 100);
                         g.setColor(Color.BLACK);
@@ -1433,7 +1533,7 @@ public class Main extends JPanel {
                         g2.setColor(Color.WHITE);
                         g2.drawOval(225 * 4 + 35 , 660, 180, 80);
                     }
-                    else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth) {
+                    else if (match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir){
                         g.setColor(color);
                         g.fillOval(225 * 2 + 25, 650, 200, 100);
                         g.setColor(Color.BLACK);
@@ -1472,8 +1572,8 @@ public class Main extends JPanel {
                         g2.setColor(Color.WHITE);
                         g2.drawOval(225 * 3 + 35 , 660, 180, 80);
                         if(match.getIndexFrontPlayer() != -1){
-                            if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir0 | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir1 |
-                                    match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.SafirBoth){
+                            if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir)
+                            {
                                 g.setColor(color);
                                 g.fillOval(225 * 4 + 25, 650, 200, 100);
                                 g.setColor(Color.BLACK);
@@ -1489,7 +1589,21 @@ public class Main extends JPanel {
             }
 
         }
+
+
+        if(isTabPressed){
+            if(XFirstForTabPressed < 400){
+                XFirstForTabPressed += 25;
+            }
+            g4 = (Graphics2D) g;
+            g4.setColor(Color.WHITE);
+            g4.fillRect(XFirstForTabPressed, 100, 800, 700);
+
+        }
+
+
     }
+
 
     public void DoAction(){
         if(match.getRoundYou() == match.getNumRound()){
@@ -1522,7 +1636,8 @@ public class Main extends JPanel {
             return;
         }
 
-        else if(match.getIndexFrontPlayer() != -1  & counterForChalesh == 2 & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.DaryafteKomakeKhraeji & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.BozorgZade & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.Safir0 & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.Safir1 & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.SafirBoth){
+        else if(match.getIndexFrontPlayer() != -1  & counterForChalesh == 2 & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.DaryafteKomakeKhraeji & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.BozorgZade & match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() != Action.Safir)
+        {
             ((Robot)match.getPlayersArePlaying().get(match.getIndexFrontPlayer())).ChangeActionForAttacked(match);
         }
         for (int i = indexShouldStartFromForChalesh; i < match.getPlayersArePlaying().size(); i++) {
@@ -1557,23 +1672,64 @@ public class Main extends JPanel {
             match.getIndexChaleshInAllPlayers();
             if(match.getIndexChaleshPlayer() != -1){
                 if(match.getIndexChaleshPlayer() != match.getRoundYou()){
-                    if(match.IsNumRoundWinChalesh()){
-                        ((Robot)match.getPlayersArePlaying().get(match.getIndexChaleshPlayer())).ChangeCardBecauseLooseChalesh(match);
-                    }
-                    else{
-                        ((Robot)match.getPlayersArePlaying().get(match.getNumRound())).ChangeCardBecauseLooseChalesh(match);
-                    }
-                }
-                else{
-                    if(match.IsNumRoundWinChalesh()){
-                        if(indexChangeCardBecauseLooseChalesh == 0){
-                            indexChangeCardBecauseLooseChalesh++;
-                            return;
+                    if(match.getPlayersArePlaying().get(match.getIndexChaleshPlayer()).getActionForChalesh() == Action.ChaleshForSecond){
+                        if(match.IsFrontWinChalesh()){
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexChaleshPlayer())).ChangeCardBecauseLooseChalesh(match);
+                        }
+                        else{
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexFrontPlayer())).ChangeCardBecauseLooseChalesh(match);
                         }
                     }
-                    else{
-                        ((Robot)match.getPlayersArePlaying().get(match.getNumRound())).ChangeCardBecauseLooseChalesh(match);
+                    else if(match.getPlayersArePlaying().get(match.getIndexChaleshPlayer()).getActionForChalesh() == Action.ChaleshForFirst) {
+                        if(match.IsNumRoundWinChalesh()){
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexChaleshPlayer())).ChangeCardBecauseLooseChalesh(match);
+                        }
+                        else{
+                            ((Robot)match.getPlayersArePlaying().get(match.getNumRound())).ChangeCardBecauseLooseChalesh(match);
+                        }
                     }
+
+                }
+                else{
+                    if(match.getPlayersArePlaying().get(match.getIndexChaleshPlayer()).getActionForChalesh() == Action.ChaleshForFirst){
+                        if(match.IsNumRoundWinChalesh()){
+                            if(indexChangeCardBecauseLooseChalesh == 0){
+                                indexChangeCardBecauseLooseChalesh++;
+                                return;
+                            }
+                        }
+                        else{
+                            if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir){
+                                if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 4){
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(3));
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(2));
+
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(3);
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(2);
+
+                                }
+                                else if (match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(1));
+
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(1);
+                                }
+                            }
+
+                            ((Robot)match.getPlayersArePlaying().get(match.getNumRound())).ChangeCardBecauseLooseChalesh(match);
+                        }
+                    }
+                    else if(match.getPlayersArePlaying().get(match.getIndexChaleshPlayer()).getActionForChalesh() == Action.ChaleshForSecond){
+                        if(match.IsFrontWinChalesh()){
+                            if(indexChangeCardBecauseLooseChalesh == 0){
+                                indexChangeCardBecauseLooseChalesh++;
+                                return;
+                            }
+                        }
+                        else{
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexFrontPlayer())).ChangeCardBecauseLooseChalesh(match);
+                        }
+                    }
+
                 }
             }
 
@@ -1610,8 +1766,10 @@ public class Main extends JPanel {
                 ((Robot)match.getPlayersArePlaying().get(i)).ChangeActionForChalesh(match);
             }
             else if(i == match.getRoundYou()){
-                numClickedForHisRound = 3;
-                break;
+                if(match.getIndexFrontPlayer() != -1){
+                    numClickedForHisRound = 3;
+                    break;
+                }
             }
             else{
                 if(match.getPlayersArePlaying().get(i).getCardsForPlayer().size() != 0){
@@ -1624,13 +1782,67 @@ public class Main extends JPanel {
 
 
         if(indexShouldStartFromForChaleshForYouRound == match.getPlayersArePlaying().size()){
+            match.getIndexChaleshInAllPlayers();
             if(match.getIndexChaleshPlayer() != -1){
-                if(match.IsNumRoundWinChalesh()){
-                    ((Robot)match.getPlayersArePlaying().get(match.getIndexChaleshPlayer())).ChangeCardBecauseLooseChalesh(match);
+                if(match.getIndexChaleshPlayer() == match.getNumRound()){
+                    if(match.getPlayersArePlaying().get(match.getIndexChaleshPlayer()).getActionForChalesh() == Action.ChaleshForSecond){
+                        if(!match.IsFrontWinChalesh()){
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexFrontPlayer())).ChangeCardBecauseLooseChalesh(match);
+                        }
+                        else{
+                            if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir){
+                                if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 4){
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(3));
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(2));
+
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(3);
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(2);
+                                }
+                                else if (match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(1));
+
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(1);
+                                }
+                            }
+                            numClickedForHisRound = 4;
+                            return;
+                        }
+                    }
+
                 }
                 else{
-                    numClickedForHisRound = 4;
-                    return;
+                    if(match.getPlayersArePlaying().get(match.getIndexChaleshPlayer()).getActionForChalesh() == Action.ChaleshForFirst){
+                        if(match.IsNumRoundWinChalesh()){
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexChaleshPlayer())).ChangeCardBecauseLooseChalesh(match);
+                        }
+                        else{
+                            if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir){
+                                if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 4){
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(3));
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(2));
+
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(3);
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(2);
+                                }
+                                else if (match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                                    match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(1));
+
+                                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(1);
+                                }
+                            }
+                            numClickedForHisRound = 4;
+                            return;
+                        }
+                    }
+                    else if(match.getPlayersArePlaying().get(match.getIndexChaleshPlayer()).getActionForChalesh() == Action.ChaleshForSecond){
+                        if(match.IsFrontWinChalesh()){
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexChaleshPlayer())).ChangeCardBecauseLooseChalesh(match);
+                        }
+                        else{
+                            ((Robot)match.getPlayersArePlaying().get(match.getIndexFrontPlayer())).ChangeCardBecauseLooseChalesh(match);
+
+                        }
+                    }
                 }
             }
 
@@ -1651,7 +1863,8 @@ public class Main extends JPanel {
         frame.setTitle("Game");
 
         final Main graphicPanel = new Main();
-
+        graphicPanel.setFocusable(true);
+        graphicPanel.setFocusTraversalKeysEnabled(false);
         frame.setSize(w + k + 40, h + 100);
         frame.setLocation(1920 - (w + k + 40) / 2,1080 - (h + 100) / 2);
         frame.getContentPane().add(graphicPanel);
@@ -1659,6 +1872,7 @@ public class Main extends JPanel {
         frame.setBackground(Color.WHITE);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         frame.setVisible(true);
 
         Thread thread = new Thread(new Runnable() {
@@ -1666,7 +1880,7 @@ public class Main extends JPanel {
                 while (true) {
 
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -1696,23 +1910,6 @@ public class Main extends JPanel {
 
         thread1.start();
 
-
-//        Thread thread2 = new Thread(new Runnable() {
-//            public void run() {
-//                while (true) {
-//
-//                    try {
-//                        Thread.sleep(5000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    System.out.println(graphicPanel.match.toString());
-//                }
-//            }
-//        });
-//
-//        thread2.start();
 
     }
 

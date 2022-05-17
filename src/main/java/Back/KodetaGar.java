@@ -13,7 +13,7 @@ public class KodetaGar extends Robot {
     public void ChangeActionForChalesh(Match match){
 //        setActionForChalesh(Action.NoAction);
 
-        if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1){
+        if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir){
             setActionForChalesh(Action.ChaleshForFirst);
             match.setIndexChaleshPlayer(this.getNumRound());
 //            if(counter % 2 == 1){
@@ -28,7 +28,7 @@ public class KodetaGar extends Robot {
 //            counter++;
         }
         else if(match.getIndexFrontPlayer() != -1){
-            if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.SafirBoth | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir0 | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir1){
+            if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir){
                 setActionForChalesh(Action.ChaleshForSecond);
                 match.setIndexChaleshPlayer(this.getNumRound());
             }
@@ -39,7 +39,7 @@ public class KodetaGar extends Robot {
     public void ChangeActionHisRound(Match match){
         for (int i = 0; i < this.getCardsForPlayer().size(); i++) {
             if(this.getCardsForPlayer().get(i) == Cards.Safir){
-                setActionForRound(Action.Safir0);
+                setActionForRound(Action.Safir);
                 return;
             }
             else if(this.getCardsForPlayer().get(i) == Cards.BozorgZade){

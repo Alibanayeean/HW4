@@ -14,7 +14,7 @@ public class GhateleMohtat extends Robot {
     @Override
     public void ChangeActionForChalesh(Match match){
 
-        if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.SafirBoth | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir0 | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir1){
+        if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir){
             setActionForChalesh(Action.ChaleshForSecond);
             match.setIndexChaleshPlayer(this.getNumRound());
         }
@@ -37,7 +37,7 @@ public class GhateleMohtat extends Robot {
                 setActionForAttacked(Action.Farmandeh);
             }
             else{
-                setActionForAttacked(Action.Safir0);
+                setActionForAttacked(Action.Safir);
 
             }
         }
@@ -66,7 +66,7 @@ public class GhateleMohtat extends Robot {
         }
         if(numAdamkosh == 0){
             if(numSafir == 1){
-                setActionForRound(Action.Safir0);
+                setActionForRound(Action.Safir);
                 return;
             }
             else{

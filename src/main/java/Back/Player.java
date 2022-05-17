@@ -19,6 +19,7 @@ public class Player {
     private Action actionForChalesh;
     private int numRound;
     private int indexCardShouldChangeForChalesh;
+    public LinkedList<Integer> CardsChangeForSafir = new LinkedList<Integer>();
     public Player(LinkedList<Cards> cardsForPlayer, int numRound) {
         this.cardsForPlayer = cardsForPlayer;
         this.numRound = numRound;

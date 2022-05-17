@@ -13,10 +13,19 @@ public class Paranoid extends Robot {
 
     @Override
     public void ChangeActionForChalesh(Match match){
+        if(match.getNumRound() == match.getRoundYou()){
+            if(match.getIndexFrontPlayer() == -1){
 
-        if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.SafirBoth | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir0 | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir1){
-            setActionForChalesh(Action.ChaleshForFirst);
-            match.setIndexChaleshPlayer(this.getNumRound());
+            }
+            else if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir){
+                setActionForChalesh(Action.ChaleshForSecond);
+                match.setIndexChaleshPlayer(this.getNumRound());
+            }
+        }
+        else{
+            if(match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.AdamKosh | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getNumRound()).getActionForRound() == Action.Safir){
+                setActionForChalesh(Action.ChaleshForFirst);
+                match.setIndexChaleshPlayer(this.getNumRound());
 //            if(counter % 2 == 1){
 //                setActionForChalesh(Action.ChaleshForFirst);
 //                match.setIndexChaleshPlayer(this.getNumRound());
@@ -27,13 +36,15 @@ public class Paranoid extends Robot {
 //            }
 //
 //            counter++;
-        }
-        else if(match.getIndexFrontPlayer() != -1){
-            if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.SafirBoth | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir0 | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir1){
-                setActionForChalesh(Action.ChaleshForSecond);
-                match.setIndexChaleshPlayer(this.getNumRound());
+            }
+            else if(match.getIndexFrontPlayer() != -1){
+                if(match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Farmandeh | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.ShahDokht | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.BozorgZade | match.getPlayersArePlaying().get(match.getIndexFrontPlayer()).getActionForAttacked() == Action.Safir){
+                    setActionForChalesh(Action.ChaleshForSecond);
+                    match.setIndexChaleshPlayer(this.getNumRound());
+                }
             }
         }
+
 
     }
 
@@ -53,7 +64,7 @@ public class Paranoid extends Robot {
                 setActionForAttacked(Action.Farmandeh);
             }
             else{
-                setActionForAttacked(Action.Safir0);
+                setActionForAttacked(Action.Safir);
 
             }
         }
@@ -68,9 +79,87 @@ public class Paranoid extends Robot {
 
     @Override
     public void ChangeActionHisRound(Match match){
+        if(true){
+            setActionForRound(Action.Safir);
+            Random random = new Random();
+            int p = 0;
+            if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                match.ShuffleCardsFromBank();
+                random = new Random();
+                p = random.nextInt(match.getBank().getCards().size());
+                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                match.getBank().getCards().remove(p);
+
+                p = random.nextInt(match.getBank().getCards().size());
+                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                match.getBank().getCards().remove(p);
+            }
+            else if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 1){
+                match.ShuffleCardsFromBank();
+                p = random.nextInt(match.getBank().getCards().size());
+                this.getCardsForPlayer().add(match.getBank().getCards().get(p));
+                match.getBank().getCards().remove(p);
+            }
+
+            if(this.getCardsForPlayer().size() == 4){
+                p = random.nextInt(this.getCardsForPlayer().size());
+
+                int q = random.nextInt(this.getCardsForPlayer().size());
+
+                while(q == p){
+                    p = random.nextInt(this.getCardsForPlayer().size());
+                }
+
+                this.CardsChangeForSafir.add(q);
+                this.CardsChangeForSafir.add(p);
+            }
+            else if(this.getCardsForPlayer().size() == 2){
+                p = random.nextInt(this.getCardsForPlayer().size());
+                this.CardsChangeForSafir.add(p);
+            }
+
+            return;
+        }
         for (int i = 0; i < this.getCardsForPlayer().size(); i++) {
             if(this.getCardsForPlayer().get(i) == Cards.Safir){
-                setActionForRound(Action.Safir0);
+                setActionForRound(Action.Safir);
+                Random random = new Random();
+                int p = 0;
+                if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                    match.ShuffleCardsFromBank();
+                    random = new Random();
+                    p = random.nextInt(match.getBank().getCards().size());
+                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                    match.getBank().getCards().remove(p);
+
+                    p = random.nextInt(match.getBank().getCards().size());
+                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                    match.getBank().getCards().remove(p);
+                }
+                else if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 1){
+                    match.ShuffleCardsFromBank();
+                    p = random.nextInt(match.getBank().getCards().size());
+                    this.getCardsForPlayer().add(match.getBank().getCards().get(p));
+                    match.getBank().getCards().remove(p);
+                }
+
+                if(this.getCardsForPlayer().size() == 4){
+                    p = random.nextInt(this.getCardsForPlayer().size());
+
+                    int q = random.nextInt(this.getCardsForPlayer().size());
+
+                    while(q == p){
+                        p = random.nextInt(this.getCardsForPlayer().size());
+                    }
+
+                    this.getCardsForPlayer().remove(q);
+                    this.getCardsForPlayer().remove(p);
+                }
+                else if(this.getCardsForPlayer().size() == 2){
+                    p = random.nextInt(this.getCardsForPlayer().size());
+                    this.getCardsForPlayer().remove(p);
+                }
+
                 return;
             }
             else if(this.getCardsForPlayer().get(i) == Cards.BozorgZade){
@@ -105,10 +194,6 @@ public class Paranoid extends Robot {
 
 
             }
-            else if(p == 2){
-                setActionForRound(Action.SafirBoth);
-                return;
-            }
             else if(p == 3){
                 setActionForRound(Action.DaryafteKomakeKhraeji);
                 return;
@@ -135,12 +220,43 @@ public class Paranoid extends Robot {
             else if(p == 7){
                 setActionForRound(Action.Farmandeh);
             }
-            else if(p == 8){
-                setActionForRound(Action.Safir1);
-                return;
-            }
             else{
-                setActionForRound(Action.Safir0);
+                setActionForRound(Action.Safir);
+                if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 2){
+                    match.ShuffleCardsFromBank();
+                    random = new Random();
+                    p = random.nextInt(match.getBank().getCards().size());
+                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                    match.getBank().getCards().remove(p);
+
+                    p = random.nextInt(match.getBank().getCards().size());
+                    match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().add(match.getBank().getCards().get(p));
+                    match.getBank().getCards().remove(p);
+                }
+                else if(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().size() == 1){
+                    match.ShuffleCardsFromBank();
+                    p = random.nextInt(match.getBank().getCards().size());
+                    this.getCardsForPlayer().add(match.getBank().getCards().get(p));
+                    match.getBank().getCards().remove(p);
+                }
+
+                if(this.getCardsForPlayer().size() == 4){
+                    p = random.nextInt(this.getCardsForPlayer().size());
+
+                    int q = random.nextInt(this.getCardsForPlayer().size());
+
+                    while(q == p){
+                        p = random.nextInt(this.getCardsForPlayer().size());
+                    }
+
+                    this.getCardsForPlayer().remove(q);
+                    this.getCardsForPlayer().remove(p);
+                }
+                else if(this.getCardsForPlayer().size() == 2){
+                    p = random.nextInt(this.getCardsForPlayer().size());
+                    this.getCardsForPlayer().remove(p);
+                }
+
                 return;
             }
 
@@ -167,6 +283,20 @@ public class Paranoid extends Robot {
 
     @Override
     public void ChangeCardBecauseLooseChalesh(Match match){
+        if(this.getActionForRound() == Action.Safir){
+            if(this.getCardsForPlayer().size() == 4){
+                match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(3));
+                match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(2));
+
+                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(3);
+                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(2);
+            }
+            else if(this.getCardsForPlayer().size() == 2){
+                match.getBank().getCards().add(match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().get(1));
+
+                match.getPlayersArePlaying().get(match.getNumRound()).getCardsForPlayer().remove(1);
+            }
+        }
         Random random = new Random();
         int p = random.nextInt(this.getCardsForPlayer().size());
         this.setIndexCardShouldChangeForChalesh(p);

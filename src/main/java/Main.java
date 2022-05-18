@@ -14,25 +14,54 @@ import java.util.Random;
 
 public class Main extends JPanel {
     Match match = new Match();
-    int numClickedForHisRound = 0;
-    int indexShouldStartFromForChalesh = 0;
-    int indexChangeCardBecauseLooseChalesh = 0;
-    int indexShouldStartFromForChaleshForYouRound = 0;
-    int counterForChalesh = 0;
-    int indexFrontPlayerForRoundYou = 0;
-    int numClickedForSafirRoundYou = 0;
-    int numClickedForSafir1 = 0;
-    int numClickedForSafir2 = 0;
-    int[] YsForCards = new int[4];
-    boolean isTabPressed = false;
+    static int numClickedForHisRound = 0;
+    static  int indexShouldStartFromForChalesh = 0;
+    static int indexChangeCardBecauseLooseChalesh = 0;
+    static int indexShouldStartFromForChaleshForYouRound = 0;
+    static int counterForChalesh = 0;
+    static int indexFrontPlayerForRoundYou = 0;
+    static int numClickedForSafirRoundYou = 0;
+    static int numClickedForSafir1 = 0;
+    static int numClickedForSafir2 = 0;
+    static int[] YsForCards = new int[4];
+    static boolean isTabPressed = false;
+    int numRunnded = 0;
+    static JFrame frame;
 
     int XFirstForTabPressed = 0;
 
-    Main(){
+    Main(JFrame frame){
+        this.frame = frame;
         YsForCards[0] = 780;
         YsForCards[1] = 780;
         YsForCards[2] = 780;
         YsForCards[3] = 780;
+
+        if(numRunnded == 0){
+            int w = 1000;
+            int h = 950;
+            int k = 600;
+            frame.setTitle("Game");
+
+
+            this.setFocusable(true);
+            this.setFocusTraversalKeysEnabled(false);
+            frame.setSize(w + k + 40, h + 100);
+            frame.setLocation(1920 - (w + k + 40) / 2,1080 - (h + 100) / 2);
+            frame.getContentPane().add(this);
+            frame.setLocationRelativeTo(null);
+            frame.setBackground(Color.WHITE);
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+            StartThreads();
+
+
+
+        }
+
+        numRunnded++;
+
         addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
 
@@ -919,7 +948,6 @@ public class Main extends JPanel {
             }
 
             public void keyPressed(KeyEvent e) {
-
                 if(e.getKeyCode() == KeyEvent.VK_TAB){
                     isTabPressed = true;
                 }
@@ -927,8 +955,6 @@ public class Main extends JPanel {
             }
 
             public void keyReleased(KeyEvent e) {
-                e.consume();
-
                 if(e.getKeyCode() == KeyEvent.VK_TAB){
                     XFirstForTabPressed = 0;
                     isTabPressed = false;
@@ -940,7 +966,43 @@ public class Main extends JPanel {
 
 
     }
+    public void StartThreads(){
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
 
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    repaint();
+                    revalidate();
+                }
+            }
+        });
+
+        thread.start();
+
+        Thread thread1 = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    DoAction();
+                    YourRound();
+
+                }
+            }
+        });
+
+        thread1.start();
+    }
     @Override
     public void paint(Graphics g) {
 
@@ -1591,17 +1653,27 @@ public class Main extends JPanel {
         }
 
 
+
         if(isTabPressed){
-            if(XFirstForTabPressed < 400){
-                XFirstForTabPressed += 25;
-            }
-            g4 = (Graphics2D) g;
-            g4.setColor(Color.WHITE);
-            g4.fillRect(XFirstForTabPressed, 100, 800, 700);
 
         }
 
 
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        this.setBackground(Color.white);
+        if(isTabPressed){
+            final JScrollPane jScrollPane = new JScrollPane();
+            jScrollPane.getViewport().setBackground(Color.BLACK);
+            jScrollPane.getViewport().setLocation(400, 100);
+            jScrollPane.getViewport().setSize(new Dimension(800, 700));
+            add(jScrollPane);
+            repaint();
+            revalidate();
+        }
     }
 
 
@@ -1862,7 +1934,7 @@ public class Main extends JPanel {
         final JFrame frame = new JFrame();
         frame.setTitle("Game");
 
-        final Main graphicPanel = new Main();
+        final Main graphicPanel = new Main(frame);
         graphicPanel.setFocusable(true);
         graphicPanel.setFocusTraversalKeysEnabled(false);
         frame.setSize(w + k + 40, h + 100);
@@ -1872,19 +1944,20 @@ public class Main extends JPanel {
         frame.setBackground(Color.WHITE);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         frame.setVisible(true);
 
+        
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
 
                     try {
-                        Thread.sleep(1);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     graphicPanel.repaint();
+                    graphicPanel.revalidate();
                 }
             }
         });
